@@ -1,19 +1,32 @@
 import datetime
 from bicicleta import Bicicleta
+from error import FormatoRutInvalido
 
 class Reservas (Bicicleta): 
-    def __init__(self, rut_cliente, id_reserva,fecha_inicio, fecha_fin): 
-        super().__init__(id_bicicleta, marca, modelo, disponibilidad, precio)
+    def __init__(self, rut_cliente, id_reserva, fecha_inicio, fecha_fin, bicicleta): 
+        # La reserva tiene una bicicleta como atributo
+        self.bicicleta = bicicleta
         self.rut_cliente = rut_cliente
         self.id_reserva = id_reserva
         self.fecha_inicio = fecha_inicio
         self.fecha_fin = fecha_fin
 
+
     def reserva (self):
-        if self.disponibilidad == False:
-            print(f"La bicicleta {self.id_bicicleta} está No Disponible")
-        else:
+        try:
+            cliente = input("Ingrese su rut (sin puntos ni guión):")
+            if len(cliente) == 9:
+                print(f"El rut es: {cliente}")
+            else:
+                raise FormatoRutInvalido(cliente)
+        except FormatoRutInvalido as e:
+            print(f"Error: {e}")
+
+
+        if self.disponibilidad == True:
             print(f"La bicicleta {self.id_bicicleta} está Disponible")
+        else:
+            print(f"La bicicleta {self.id_bicicleta} está Reservada")
     
 
     def cancelar_reserva (self):
